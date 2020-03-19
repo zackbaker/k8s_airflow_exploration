@@ -1,0 +1,9 @@
+dags:
+  initContainer:
+    enabled: true
+  git:
+    url: https://github.com/zackbaker/k8s_airflow_exploration.git
+    ref: master
+    gitSync:
+      enabled: true
+      refreshTime: 60
