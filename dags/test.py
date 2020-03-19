@@ -1,12 +1,12 @@
 from airflow import DAG
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow.operators.dummy_operator import DummyOperator
 
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'start_date': datetime.utcnow(),
+    'start_date': datetime.now(timezone.utc),
     'email': ['airflow@example.com'],
     'email_on_failure': False,
     'email_on_retry': False,
