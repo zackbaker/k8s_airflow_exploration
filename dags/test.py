@@ -6,7 +6,7 @@ from airflow.operators.dummy_operator import DummyOperator
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'start_date': '2020-03-19 15:35:00',
+    'start_date': '2020-03-20 09:00:00',
     'email': ['airflow@example.com'],
     'email_on_failure': False,
     'email_on_retry': False,
@@ -37,7 +37,7 @@ passing = KubernetesPodOperator(
 
 failing = KubernetesPodOperator(
     namespace='airflow',
-    image="ubuntu:1604",
+    image="ubuntu:16.04",
     cmds=["Python", "-c"],
     arguments=["print('hello world')"],
     labels={"foo": "bar"},
