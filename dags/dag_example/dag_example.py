@@ -19,6 +19,7 @@ dag = DAG(
     default_args=default_args,
     schedule_interval=timedelta(minutes=10),
     max_active_runs=1,
+    concurrency=2
 )
 
 count = KubernetesPodOperator(
