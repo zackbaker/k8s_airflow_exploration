@@ -18,12 +18,13 @@ dag = DAG(
     'dag_example',
     default_args=default_args,
     schedule_interval=timedelta(minutes=10),
+    concurrency=1
 )
 
 count = KubernetesPodOperator(
     namespace='airflow',
     image="zackbaker/k8s_airflow_test:latest",
-    cmds=["python", "dags/dag_example/tasks/count.py"],
+    cmds=["python", "dag_example/tasks/count.py"],
     name="counting",
     task_id="counting",
     in_cluster=True,
@@ -34,7 +35,7 @@ count = KubernetesPodOperator(
 coin_flip = KubernetesPodOperator(
     namespace='airflow',
     image="zackbaker/k8s_airflow_test:latest",
-    cmds=["python", "dags/dag_example/tasks/coin_flip.py"],
+    cmds=["python", "dag_example/tasks/coin_flip.py"],
     name="coin_flip",
     task_id="coin_flip",
     in_cluster=True,
@@ -45,7 +46,7 @@ coin_flip = KubernetesPodOperator(
 finished = KubernetesPodOperator(
     namespace='airflow',
     image="zackbaker/k8s_airflow_test:latest",
-    cmds=["python", "dags/dag_example/tasks/finished.py"],
+    cmds=["python", "dag_example/tasks/finished.py"],
     name="finished",
     task_id="finished",
     in_cluster=True,
@@ -53,5 +54,4 @@ finished = KubernetesPodOperator(
     dag=dag
 )
 
-finished.set_upstream(coin_flip)
-finished.set_upstream(count)
+finished.set_upstream([count, coin_flip])
