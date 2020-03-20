@@ -7,3 +7,5 @@ dags:
     gitSync:
       enabled: true
       refreshTime: 60
+workers:
+  replicas: 2
