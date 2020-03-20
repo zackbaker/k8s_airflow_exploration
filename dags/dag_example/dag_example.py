@@ -53,5 +53,5 @@ finished = KubernetesPodOperator(
     dag=dag
 )
 
-finished.set_downstream(coin_flip)
-finished.set_downstream(count)
+finished.set_upstream(coin_flip)
+finished.set_upstream(count)
