@@ -17,7 +17,7 @@ default_args = {
 dag = DAG(
     'kubernetes_sample',
     default_args=default_args,
-    schedule_interval=timedelta(minutes=10)
+    schedule_interval=timedelta(minutes=10),
 )
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
@@ -30,6 +30,7 @@ passing = KubernetesPodOperator(
     labels={"foo": "bar"},
     name="passing-test",
     task_id="passing-task",
+    in_cluster=True,
     get_logs=True,
     dag=dag
 )
@@ -42,6 +43,7 @@ failing = KubernetesPodOperator(
     labels={"foo": "bar"},
     name="fail",
     task_id="failing-task",
+    in_cluster=True,
     get_logs=True,
     dag=dag
 )
