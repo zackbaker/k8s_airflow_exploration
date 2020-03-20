@@ -10,7 +10,7 @@ default_args = {
     'email': ['airflow@example.com'],
     'email_on_failure': False,
     'email_on_retry': False,
-    'retries': 1,
+    'retries': 0,
     'retry_delay': timedelta(minutes=5)
 }
 
@@ -25,7 +25,7 @@ start = DummyOperator(task_id='run_this_first', dag=dag)
 passing = KubernetesPodOperator(
     namespace='airflow',
     image="python:3.7",
-    cmds=["Python", "-c"],
+    cmds=["python", "-c"],
     arguments=["print('hello world')"],
     labels={"foo": "bar"},
     name="passing-test",
@@ -38,7 +38,7 @@ passing = KubernetesPodOperator(
 failing = KubernetesPodOperator(
     namespace='airflow',
     image="ubuntu:16.04",
-    cmds=["Python", "-c"],
+    cmds=["python", "-c"],
     arguments=["print('hello world')"],
     labels={"foo": "bar"},
     name="fail",

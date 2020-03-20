@@ -8,7 +8,7 @@ Exploring Airflow on k8s
 brew install helm
 kubectl create namespace airflow
 kubectl config set-context dev --namespace=airflow
-helm install airflow stable/airflow --namespace "airflow"
+helm install airflow stable/airflow -n airflow -f charts/values.yaml
 ```
 - Next lets run port-forwarding in a screen
 ```bash
