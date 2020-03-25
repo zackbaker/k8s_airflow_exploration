@@ -16,7 +16,7 @@ default_args = {
 }
 
 dag = DAG(
-    'kubernetes_sample',
+    'cron_example',
     default_args=default_args,
     schedule_interval='*/10 * * * *',
 )
