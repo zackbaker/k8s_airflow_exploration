@@ -1,7 +1,6 @@
 from airflow import DAG
 from datetime import timedelta
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
-from airflow.operators.dummy_operator import DummyOperator
 
 default_args = {
     'owner': 'airflow',
@@ -11,7 +10,8 @@ default_args = {
     'email_on_failure': False,
     'email_on_retry': False,
     'retries': 0,
-    'retry_delay': timedelta(minutes=5)
+    'retry_delay': timedelta(minutes=5),
+    'catchup': False
 }
 
 dag = DAG(
@@ -32,6 +32,8 @@ count = KubernetesPodOperator(
     get_logs=True,
     dag=dag
 )
+
+
 
 coin_flip = KubernetesPodOperator(
     namespace='airflow',
