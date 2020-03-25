@@ -12,13 +12,13 @@ default_args = {
     'email_on_retry': False,
     'retries': 0,
     'retry_delay': timedelta(minutes=5),
-    'catchup': False
 }
 
 dag = DAG(
     'cron_example',
     default_args=default_args,
     schedule_interval='*/10 * * * *',
+    catchup=False
 )
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
