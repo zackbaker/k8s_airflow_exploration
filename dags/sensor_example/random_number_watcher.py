@@ -18,7 +18,7 @@ default_args = {
 }
 
 dag = DAG(
-    'cron_example',
+    'random_number_watcher',
     default_args=default_args,
     schedule_interval='*/5 * * * *',
     catchup=False
