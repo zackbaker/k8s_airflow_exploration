@@ -1,10 +1,11 @@
+from dags.sensor_example.tasks import check_for_file
+
 from airflow import DAG
 from datetime import timedelta, datetime
-
 from airflow.contrib.kubernetes.volume import Volume
 from airflow.contrib.kubernetes.volume_mount import VolumeMount
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
-
+from airflow.operators.python_operator import PythonOperator
 
 default_args = {
     'owner': 'airflow',
@@ -37,17 +38,23 @@ volume_mount = VolumeMount(
     read_only=False
 )
 
-timestamp = datetime.now()
-
-create_file = KubernetesPodOperator(
-    namespace='airflow',
-    image="zackbaker/k8s_airflow_test:latest",
-    cmds=["python", "sensor_example/tasks/check_for_file.py"],
-    name="random-number-notifier",
-    task_id="random-number-notifier",
-    volumes=[volume],
-    volume_mounts=[volume_mount],
-    in_cluster=True,
-    get_logs=True,
+run_this = PythonOperator(
+    task_id='python_operator',
+    provide_context=True,
+    python_callable=check_for_file.run(),
     dag=dag
 )
+
+
+# create_file = KubernetesPodOperator(
+#     namespace='airflow',
+#     image="zackbaker/k8s_airflow_test:latest",
+#     cmds=["python", "sensor_example/tasks/check_for_file.py"],
+#     name="random-number-notifier",
+#     task_id="random-number-notifier",
+#     volumes=[volume],
+#     volume_mounts=[volume_mount],
+#     in_cluster=True,
+#     get_logs=True,
+#     dag=dag
+# )

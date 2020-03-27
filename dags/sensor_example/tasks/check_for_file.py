@@ -1,4 +1,4 @@
 import logging
 
-if __name__ == '__main__':
+def run():
     logging.info('Hello World!')
