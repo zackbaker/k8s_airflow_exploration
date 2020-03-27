@@ -9,5 +9,9 @@ def run(ds, **kwargs):
     notifier.loop()
 
 
-def trigger_dag(ds, **kwargs):
+def trigger_dag(ds, kwargs):
     logging.info('We have found a File!')
+
+
+if __name__ == '__main__':
+    run()

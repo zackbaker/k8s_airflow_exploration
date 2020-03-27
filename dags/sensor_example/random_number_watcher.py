@@ -38,23 +38,16 @@ volume_mount = VolumeMount(
     read_only=False
 )
 
-run_this = PythonOperator(
-    task_id='python_operator',
-    provide_context=True,
-    python_callable=check_for_file.run,
+
+create_file = KubernetesPodOperator(
+    namespace='airflow',
+    image="zackbaker/k8s_airflow_test:latest",
+    cmds=["python", "sensor_example/tasks/check_for_file.py"],
+    name="random-number-notifier",
+    task_id="random-number-notifier",
+    volumes=[volume],
+    volume_mounts=[volume_mount],
+    in_cluster=True,
+    get_logs=True,
     dag=dag
 )
-
-
-# create_file = KubernetesPodOperator(
-#     namespace='airflow',
-#     image="zackbaker/k8s_airflow_test:latest",
-#     cmds=["python", "sensor_example/tasks/check_for_file.py"],
-#     name="random-number-notifier",
-#     task_id="random-number-notifier",
-#     volumes=[volume],
-#     volume_mounts=[volume_mount],
-#     in_cluster=True,
-#     get_logs=True,
-#     dag=dag
-# )
