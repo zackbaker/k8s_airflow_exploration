@@ -33,6 +33,7 @@ volume = Volume(name='file-store', configs=volume_config)
 volume_mount = VolumeMount(
     'file-store',
     mount_path='/mnt/file-store',
+    sub_path=None,
     read_only=False
 )
 
