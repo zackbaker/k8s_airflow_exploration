@@ -1,11 +1,13 @@
 import logging
+import pyinotify
 
 
 def run(ds, **kwargs):
-    logging.info('-------------------')
-    logging.info(ds)
-    logging.info('-------------------')
-    logging.info(kwargs)
-    logging.info('-------------------')
-    logging.info('Hello World!')
-    return True
+    wm = pyinotify.WatchManager()
+    notifier = pyinotify.Notifier(wm, trigger_dag(ds, kwargs))
+    wm.add_watch('/mnt/file-store', pyinotify.CREATE)
+    notifier.loop()
+
+
+def trigger_dag(ds, **kwargs):
+    logging.info('We have found a File!')
