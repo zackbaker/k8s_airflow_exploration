@@ -33,8 +33,6 @@ count = KubernetesPodOperator(
     dag=dag
 )
 
-
-
 coin_flip = KubernetesPodOperator(
     namespace='airflow',
     image="zackbaker/k8s_airflow_test:latest",

@@ -9,6 +9,7 @@ brew install helm
 kubectl create namespace airflow
 kubectl config set-context dev --namespace=airflow
 helm install airflow stable/airflow -n airflow -f charts/values.yaml
+kubectl create -f charts/pvc.yaml -n airflow
 ```
 - Next lets run port-forwarding in a screen
 ```bash
