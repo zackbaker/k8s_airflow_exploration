@@ -2,6 +2,7 @@ from airflow import DAG
 from datetime import timedelta, datetime
 
 from airflow.contrib.kubernetes.volume import Volume
+from airflow.contrib.kubernetes.volume_mount import VolumeMount
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 
 
@@ -29,6 +30,11 @@ volume_config = {
     }
 }
 volume = Volume(name='file-store', configs=volume_config)
+volume_mount = VolumeMount(
+    'file-store',
+    mount_path='/mnt/file-store',
+    read_only=False
+)
 
 timestamp = datetime.now()
 
@@ -40,6 +46,7 @@ create_file = KubernetesPodOperator(
     name="generate-random-number",
     task_id="generate-random-number",
     volumes=[volume],
+    volume_mounts=[volume_mount],
     in_cluster=True,
     get_logs=True,
     dag=dag
