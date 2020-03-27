@@ -43,8 +43,8 @@ create_file = KubernetesPodOperator(
     namespace='airflow',
     image="zackbaker/k8s_airflow_test:latest",
     cmds=["python", "sensor_example/tasks/check_for_file.py"],
-    name="generate-random-number",
-    task_id="generate-random-number",
+    name="random-number-notifier",
+    task_id="random-number-notifier",
     volumes=[volume],
     volume_mounts=[volume_mount],
     in_cluster=True,
@@ -52,3 +52,4 @@ create_file = KubernetesPodOperator(
     dag=dag
 )
 
+create_file.run()
