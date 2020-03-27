@@ -38,11 +38,10 @@ volume_mount = VolumeMount(
     read_only=False
 )
 
-func_call = check_for_file.run()
 run_this = PythonOperator(
     task_id='python_operator',
     provide_context=True,
-    python_callable=func_call,
+    python_callable=check_for_file.run,
     dag=dag
 )
 
