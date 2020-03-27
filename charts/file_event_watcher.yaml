@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: file-event-watcher
+spec:
+  containers:
+  - name: file-event-watcher
+    image: zackbaker/k8s_airflow_test:latest
+    imagePullPolicy: IfNotPresent
+    command:
+      - python
+      - file_creation_watcher/file_creation_watcher.py
+    volumeMounts:
+    - name: file-store
+      mountPath: /mnt/file-store
+  volumes:
+    - name: file-store
+      persistentVolumeClaim:
+        claimName: file-store
