@@ -51,5 +51,3 @@ create_file = KubernetesPodOperator(
     get_logs=True,
     dag=dag
 )
-
-create_file.run()
