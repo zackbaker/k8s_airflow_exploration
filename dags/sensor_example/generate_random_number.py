@@ -37,13 +37,11 @@ volume_mount = VolumeMount(
     read_only=False
 )
 
-timestamp = datetime.now()
-
 create_file = KubernetesPodOperator(
     namespace='airflow',
     image="debian:9.4",
     cmds=["bash", "-c"],
-    arguments=['echo $(($RANDOM%10000+10000)) >> /mnt/file-store/random_number-' + str(timestamp) + '.txt'],
+    arguments=['echo $(($RANDOM%10000+10000)) >> /mnt/file-store/random_number-$(date "+%Y.%m.%d-%H.%M.%S").txt'],
     name="generate-random-number",
     task_id="generate-random-number",
     volumes=[volume],

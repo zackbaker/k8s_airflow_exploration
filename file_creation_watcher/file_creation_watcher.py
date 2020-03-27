@@ -1,6 +1,8 @@
 import time
+import logging
 
 from watchdog.observers import Observer
+from watchdog.events import PatternMatchingEventHandler
 
 
 class FileCreationWatcher:
@@ -33,9 +35,15 @@ class FileCreationWatcher:
         )
 
 
-class FileCreationEvent:
+class FileCreationEvent(PatternMatchingEventHandler):
     def __init__(self):
-        print('hi there')
+        super(FileCreationEvent, self).__init__()
+        self._ignore_directories = True
+        self._patterns = 'random_numbers-*'
+
+    def on_created(self, event):
+        print('EVENT INCOMING!')
+        print(event)
 
 
 if __name__ == "__main__":
