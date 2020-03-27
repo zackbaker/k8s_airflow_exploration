@@ -41,7 +41,7 @@ volume_mount = VolumeMount(
 run_this = PythonOperator(
     task_id='python_operator',
     provide_context=True,
-    python_callable=check,
+    python_callable=check_for_file.run(),
     dag=dag
 )
 
