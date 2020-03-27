@@ -1,3 +1,1 @@
-apache-airflow==1.10.4
-kubernetes==11.0.0
 pyinotify==0.9.6
