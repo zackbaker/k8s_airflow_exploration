@@ -8,8 +8,7 @@ from watchdog.events import PatternMatchingEventHandler
 
 class FileCreationWatcher:
     def __init__(self):
-        # self.__src_path = '/mnt/file-store/'
-        self.__src_path = '/Users/zack.baker/Downloads/'
+        self.__src_path = '/mnt/file-store/'
         self.__event_handler = FileCreationEvent()
         self.__event_observer = Observer()
 
@@ -48,9 +47,8 @@ class FileCreationEvent(PatternMatchingEventHandler):
         print('EVENT INCOMING!')
         print(event.src_path)
         r = requests.post(
-            # 'http://airflow-web.airflow.svc.cluster.local:8080/api/experimental/dags/random_number_watcher/dag_runs',
-            'http://localhost:8080/api/experimental/dags/random_number_watcher/dag_runs',
-            json='{"conf": {}}'
+            'http://airflow-web.airflow.svc.cluster.local:8080/api/experimental/dags/random_number_watcher/dag_runs',
+            json={"conf": {"file_path": event.src_path}}
         )
         print(r.status_code, r.reason)
 

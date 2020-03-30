@@ -2,7 +2,7 @@ from airflow import DAG
 from airflow.contrib.kubernetes.volume import Volume
 from airflow.contrib.kubernetes.volume_mount import VolumeMount
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
-from airflow.operators.bash_operator import BashOperator
+from airflow.models.dagrun import DagRun
 
 default_args = {
     'owner': 'airflow',
@@ -20,6 +20,7 @@ dag = DAG(
     schedule_interval=None,
     catchup=False,
 )
+dag_run = DagRun()
 
 volume_config = {
     'persistentVolumeClaim': {
@@ -34,22 +35,28 @@ volume_mount = VolumeMount(
     read_only=False
 )
 
-bash_op = BashOperator(
-     task_id='bash_task',
-     bash_command='echo "Here is the message: '
-                  '{{ dag_run.conf["file_path"] if dag_run else "" }}"',
-     dag=dag,
+print_number = KubernetesPodOperator(
+    namespace='airflow',
+    task_id='print-number',
+    name='print-number',
+    volumes=[volume],
+    volume_mounts=[volume_mount],
+    image='zackbaker/k8s_airflow_test:latest',
+    cmds=["python", "dags/sensor_example/tasks/print_number.py"],
+    arguments=dag_run.conf['file_path'],
+    in_cluster=True,
+    get_logs=True,
+    dag=dag
 )
 
-# check_for_file = KubernetesPodOperator(
+# delete_file = KubernetesPodOperator(
 #     namespace='airflow',
-#     task_id='check-for-file',
-#     name='check-for-file',
+#     task_id='print-number',
+#     name='print-number',
 #     volumes=[volume],
 #     volume_mounts=[volume_mount],
 #     image='zackbaker/k8s_airflow_test:latest',
-#     cmds=["python", "dags/sensor_example/tasks/print_number.py"],
-#     xcom_push=True,
+#     cmds=["python", "dags/sensor_example/tasks/delete_file.py"],
 #     in_cluster=True,
 #     get_logs=True,
 #     dag=dag
