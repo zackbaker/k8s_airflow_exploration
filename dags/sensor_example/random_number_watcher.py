@@ -50,8 +50,8 @@ print_number = KubernetesPodOperator(
 
 delete_file = KubernetesPodOperator(
     namespace='airflow',
-    task_id='print-number',
-    name='print-number',
+    task_id='delete-file',
+    name='delete-file',
     volumes=[volume],
     volume_mounts=[volume_mount],
     image='zackbaker/k8s_airflow_test:latest',
