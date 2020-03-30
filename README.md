@@ -20,3 +20,7 @@ screen kubectl port-forward --namespace airflow $POD_NAME 8080:8080
 ```
 - - Then press ctrl+a d
 - [Now go here](http://localhost:8080/admin/)
+- Lastly let's setup the file creation watcher
+```bash
+kubectl create -f charts/file_event_watcher.yaml -n airflow
+```
