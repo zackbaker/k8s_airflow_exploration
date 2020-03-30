@@ -35,6 +35,7 @@ volume_mount = VolumeMount(
 
 
 check_for_file = KubernetesPodOperator(
+    namespace='airflow',
     task_id='check-for-file',
     name='check-for-file',
     volume=volume,
