@@ -15,7 +15,8 @@ class FileCreationWatcher:
         self.start()
         try:
             while True:
-                time.sleep(60)
+                print('Checking...')
+                time.sleep(30)
         except KeyboardInterrupt:
             self.stop()
 
@@ -43,7 +44,8 @@ class FileCreationEvent(PatternMatchingEventHandler):
 
     def on_created(self, event):
         print('EVENT INCOMING!')
-        print(event)
+        print(event.src_path)
+        exit(0)
 
 
 if __name__ == "__main__":
