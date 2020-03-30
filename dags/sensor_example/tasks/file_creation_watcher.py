@@ -1,3 +1,4 @@
+import json
 import time
 import logging
 
@@ -45,6 +46,8 @@ class FileCreationEvent(PatternMatchingEventHandler):
     def on_created(self, event):
         logging.info('EVENT INCOMING!')
         logging.info(event.src_path)
+        with open('/airflow/xcom/return.json', 'w') as outfile:
+            json.dump(event, outfile)
         exit(0)
 
 
