@@ -1,6 +1,8 @@
 # k8s_airflow_exploration
 Exploring Airflow on k8s
 
+Keep in mind nothing will run unless you turn it on through the UI
+
 ## Setup Steps
 - Download Docker and turn on Kubernetes
 - Run the following commands
