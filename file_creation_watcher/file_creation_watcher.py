@@ -1,13 +1,15 @@
 import time
 
 import requests
+from flask import jsonify
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 
 
 class FileCreationWatcher:
     def __init__(self):
-        self.__src_path = '/mnt/file-store/'
+        # self.__src_path = '/mnt/file-store/'
+        self.__src_path = '/Users/zack.baker/Downloads/'
         self.__event_handler = FileCreationEvent()
         self.__event_observer = Observer()
 
@@ -45,10 +47,12 @@ class FileCreationEvent(PatternMatchingEventHandler):
     def on_created(self, event):
         print('EVENT INCOMING!')
         print(event.src_path)
-        requests.post(
+        r = requests.post(
+            # 'http://airflow-web.airflow.svc.cluster.local:8080/api/experimental/dags/random_number_watcher/dag_runs',
             'http://localhost:8080/api/experimental/dags/random_number_watcher/dag_runs',
-            data={'conf': {'file_path': event.src_path}}
+            json='{"conf": {}}'
         )
+        print(r.status_code, r.reason)
 
 
 if __name__ == "__main__":

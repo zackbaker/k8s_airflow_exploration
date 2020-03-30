@@ -15,7 +15,7 @@ default_args = {
 }
 
 dag = DAG(
-    'random_number_watcher',
+    dag_id='random_number_watcher',
     default_args=default_args,
     schedule_interval=None,
     catchup=False,
