@@ -20,7 +20,6 @@ dag = DAG(
     schedule_interval=None,
     catchup=False,
 )
-dag_run = DagRun()
 
 volume_config = {
     'persistentVolumeClaim': {
@@ -43,7 +42,7 @@ print_number = KubernetesPodOperator(
     volume_mounts=[volume_mount],
     image='zackbaker/k8s_airflow_test:latest',
     cmds=["python", "dags/sensor_example/tasks/print_number.py"],
-    arguments=dag_run.conf['file_path'],
+    arguments=['{{ dag_run.conf["key"] }}'],
     in_cluster=True,
     get_logs=True,
     dag=dag
