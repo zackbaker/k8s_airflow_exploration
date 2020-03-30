@@ -48,15 +48,17 @@ print_number = KubernetesPodOperator(
     dag=dag
 )
 
-# delete_file = KubernetesPodOperator(
-#     namespace='airflow',
-#     task_id='print-number',
-#     name='print-number',
-#     volumes=[volume],
-#     volume_mounts=[volume_mount],
-#     image='zackbaker/k8s_airflow_test:latest',
-#     cmds=["python", "dags/sensor_example/tasks/delete_file.py"],
-#     in_cluster=True,
-#     get_logs=True,
-#     dag=dag
-# )
+delete_file = KubernetesPodOperator(
+    namespace='airflow',
+    task_id='print-number',
+    name='print-number',
+    volumes=[volume],
+    volume_mounts=[volume_mount],
+    image='zackbaker/k8s_airflow_test:latest',
+    cmds=["python", "dags/sensor_example/tasks/delete_file.py"],
+    arguments=['{{ dag_run.conf["file_path"] }}'],
+    in_cluster=True,
+    get_logs=True,
+    dag=dag
+)
+delete_file.set_upstream(print_number)
