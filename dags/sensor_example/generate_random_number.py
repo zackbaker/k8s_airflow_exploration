@@ -1,5 +1,5 @@
 from airflow import DAG
-from datetime import timedelta, datetime
+from datetime import timedelta
 
 from airflow.contrib.kubernetes.volume import Volume
 from airflow.contrib.kubernetes.volume_mount import VolumeMount

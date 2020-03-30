@@ -1,7 +1,6 @@
-import json
 import time
-import logging
 
+import requests
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 
@@ -16,7 +15,7 @@ class FileCreationWatcher:
         self.start()
         try:
             while True:
-                logging.info('Checking...')
+                print('Checking...')
                 time.sleep(30)
         except KeyboardInterrupt:
             self.stop()
@@ -44,11 +43,12 @@ class FileCreationEvent(PatternMatchingEventHandler):
         self._patterns = 'random_numbers-*'
 
     def on_created(self, event):
-        logging.info('EVENT INCOMING!')
-        logging.info(event.src_path)
-        with open('/airflow/xcom/return.json', 'w') as outfile:
-            json.dump(event, outfile)
-        exit(0)
+        print('EVENT INCOMING!')
+        print(event.src_path)
+        requests.post(
+            'http://localhost:8080/api/experimental/dags/random_number_watcher/dag_runs',
+            data={'conf': {'file_path': event.src_path}}
+        )
 
 
 if __name__ == "__main__":
