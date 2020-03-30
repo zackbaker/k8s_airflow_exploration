@@ -17,7 +17,8 @@ dag = DAG(
     'random_number_watcher',
     default_args=default_args,
     schedule_interval='*/1 * * * *',
-    catchup=False
+    catchup=False,
+    max_active_runs=1
 )
 
 volume_config = {
