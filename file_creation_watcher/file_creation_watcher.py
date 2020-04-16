@@ -1,16 +1,15 @@
 import time
 
 import requests
-from flask import jsonify
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 
 
 class FileCreationWatcher:
     def __init__(self):
-        self.__src_path = '/mnt/file-store/'
-        self.__event_handler = FileCreationEvent()
-        self.__event_observer = Observer()
+        self.src_path = '/mnt/file-store/'
+        self.event_handler = FileCreationEvent()
+        self.event_observer = Observer()
 
     def run(self):
         self.start()
@@ -22,17 +21,17 @@ class FileCreationWatcher:
             self.stop()
 
     def start(self):
-        self.__schedule()
-        self.__event_observer.start()
+        self.schedule()
+        self.event_observer.start()
 
     def stop(self):
-        self.__event_observer.stop()
-        self.__event_observer.join()
+        self.event_observer.stop()
+        self.event_observer.join()
 
-    def __schedule(self):
-        self.__event_observer.schedule(
-            self.__event_handler,
-            self.__src_path,
+    def schedule(self):
+        self.event_observer.schedule(
+            self.event_handler,
+            self.src_path,
             recursive=True
         )
 
